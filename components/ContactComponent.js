@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
 import { Card } from "react-native-elements";
-import { createStackNavigator } from "@react-navigation/stack";
-
-
-const Stack = createStackNavigator();
 
 class Contact extends Component{
-    RenderAddress = () => {
+    render(){
         return(
             <Card>
                 <Card.Title style={{color:'black'}}>Contact Information</Card.Title>
@@ -31,27 +27,6 @@ class Contact extends Component{
                     Email:confusion@food.net
                 </Text>
             </Card>
-        );
-    }
-    render(){
-        return(
-            <Stack.Navigator
-                screenOptions={{
-                    headerStyle:{
-                    backgroundColor: '#512DA8'
-                    },
-                    headerTintColor:'#fff',
-                    headerTitleStyle:{
-                        color:'#fff'
-                    }
-                }}>
-                <Stack.Screen 
-                    name='Contact'
-                    component={ this.RenderAddress }
-                    options={{
-                        title: 'Contact',
-                    }}/>
-            </Stack.Navigator>
         );
     }
 }
