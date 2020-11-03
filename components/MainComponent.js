@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
 import Home from './HomeComponent';
+import Contact from './ContactComponent';
+import About from './AboutComponent';
 import { Platform, StatusBar, View, Text, Button } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -46,7 +48,9 @@ class Main extends Component{
                     }
                 }}>
                 <Drawer.Screen name="Home" component={Home}/>
+                <Drawer.Screen name="About" component={About}/>
                 <Drawer.Screen name="Menu" component={stackNavigator}/>
+                <Drawer.Screen name="Contact" component={Contact}/>
             </Drawer.Navigator>
         );
     }
