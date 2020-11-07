@@ -135,6 +135,6 @@ export const leadersFailed = (errMess) => ({
 });
 
 export const addLeaders = (leaders) => ({
-    type   : ActionTypes.ADD_PROMOS,
+    type   : ActionTypes.ADD_LEADERS,
     payload: leaders,
 });

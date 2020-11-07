@@ -1,18 +1,24 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView, FlatList } from "react-native";
 import { Card, Icon } from "react-native-elements";
-import { DISHES } from "../shared/dishes";
 import { COMMENTS } from "../shared/comments";
+
+import { connect } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
+
+const mapStateToProps = state => ({
+    dishes  : state.dishes,
+    comments: state.comments,
+})
 
 const RenderDish = (props) =>{
     const dish = props.dish;
-
     if(dish != null){
         return (
             <Card>
                 <Card.Title>{dish.name}</Card.Title>
                 <Card.Divider/>
-                <Card.Image source={require('./images/uthappizza.png')} />
+                <Card.Image source={{uri : baseUrl + dish.image}} />
                 <Text style={{marginBottom: 10}}>
                 {dish.description}
                 </Text>
@@ -60,7 +66,7 @@ const RenderComments = (props)=>{
             <FlatList
                 data={comments}
                 renderItem={renderCommentItem}
-                keyExtractor={item=>item.id.toString()}
+                keyExtractor={item=>item._id}
             />
         </Card>
     );
@@ -70,8 +76,7 @@ class Dishdetail extends Component{
     constructor(props){
         super(props);
         this.state = {
-            dishes : DISHES,
-            comments: COMMENTS,
+            comments : COMMENTS,
             favorites: [],
         };
     }
@@ -85,13 +90,13 @@ class Dishdetail extends Component{
         return(
         <ScrollView>
             <RenderDish 
-                dish={this.state.dishes[+dishId]}
+                dish={this.props.dishes.dishes.filter((dish)=> dish._id == dishId)[0]}
                 favorite = {this.state.favorites.includes(dishId)}
                 onPress = {() => this.markFavorite(dishId)}
             />
             <RenderComments 
                 comments={this.state.comments.filter(
-                    (comment)=>comment.dishId == dishId
+                    (comment)=> comment.dishId == 1
                 )}
             />
         </ScrollView>
@@ -99,4 +104,4 @@ class Dishdetail extends Component{
     }    
 }
 
-export default Dishdetail;
+export default connect(mapStateToProps)(Dishdetail);
