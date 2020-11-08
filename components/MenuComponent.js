@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FlatList } from "react-native";
 import { Tile } from "react-native-elements";
-import Loading from "./LoadingComponent";
+import { Loading } from "./LoadingComponent";
 
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
