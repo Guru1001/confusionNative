@@ -4,6 +4,7 @@ import Dishdetail from './DishdetailComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
+import Reservation from "./ReservationComponent";
 import { View, Image, StyleSheet, ScrollView, SafeAreaView, Text } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
@@ -12,11 +13,7 @@ import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from "../redux/ActionCreators";
 
-const mapStateToProps = state =>{
-    return{
-
-    }
-}
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
     fetchDishes : () => dispatch(fetchDishes()),
@@ -29,6 +26,7 @@ const HomeStack = createStackNavigator();
 const MenuStack = createStackNavigator();
 const AboutStack = createStackNavigator();
 const ContactStack = createStackNavigator();
+const ReservationStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const MenuNavigator = () => (
@@ -149,6 +147,34 @@ const ContactNavigator = () =>(
     </ContactStack.Navigator>
 );
 
+const ReservationNavigator = () =>(
+    <ReservationStack.Navigator
+        screenOptions={{
+            headerStyle:{
+            backgroundColor: '#512DA8'
+            },
+            headerTintColor:'#fff',
+            headerTitleStyle:{
+                color:'#fff'
+            }
+        }}>
+        <ReservationStack.Screen 
+            name='Reserve Table'
+            component={Reservation}
+            options={({navigation})=>({
+                title:"Reserve Table",
+                headerLeft:()=>(
+                    <Icon
+                        name="menu"
+                        size={32}
+                        color="#fff"
+                        onPress={()=>{navigation.toggleDrawer()}}
+                    />
+                )
+            })}/>
+    </ReservationStack.Navigator>
+);
+
 const CustomDrawerContentComponent = (props) =>(
     <DrawerContentScrollView {...props}>
         <SafeAreaView 
@@ -249,6 +275,22 @@ class Main extends Component{
                                 name="address-card"
                                 type="font-awesome"
                                 size={20}
+                                color={tintColor}
+                            />
+                        )
+                    }}
+                />
+                <Drawer.Screen 
+                    name="Reserve Table" 
+                    component={ReservationNavigator}
+                    options={{
+                        title:"Reserve Table",
+                        drawerLabel:"Reserve Table",
+                        drawerIcon:({tintColor})=> (
+                            <Icon
+                                name="cutlery"
+                                type="font-awesome"
+                                size={22}
                                 color={tintColor}
                             />
                         )
