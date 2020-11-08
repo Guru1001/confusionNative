@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { FlatList } from "react-native";
 import { Tile } from "react-native-elements";
+import Loading from "./LoadingComponent";
 
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -22,8 +23,16 @@ class Menu extends Component{
             />
         )
         const { navigate } = this.props.navigation;
-
-        return(
+        if(this.props.dishes.isLoading){
+            return(<Loading/>);
+        }else if(this.props.dishes.errMess){
+            return(
+                <View>
+                        <Text>{this.props.dishes.errMess}</Text>
+                </View>
+            );
+        }
+        else return(
             <FlatList
                 keyExtractor = {item => item._id}
                 data={this.props.dishes.dishes}
