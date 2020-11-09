@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from "react-native";
-import { Card } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 class Reservation extends Component{
