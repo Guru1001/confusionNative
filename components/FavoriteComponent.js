@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, Animated, StyleSheet } from "react-native";
+import { View, Text, FlatList,Alert, Animated, StyleSheet } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import { Loading } from "./LoadingComponent";
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
@@ -20,11 +20,31 @@ const mapDispatchToProps = dispatch => ({
 
 class Favorites extends Component {
     render(){
-        const { navigate } = this.props.navigation;
+        const { navigate }  = this.props.navigation;
         const renderFavoriteItem = ({item}) => {
-            const renderRightAction = (text, color) => {
+            let _swipeableRow;
+            const renderRightAction = (text, color, x, progress) => {
+                const trans = progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [x, 0],
+                });
                 const pressHandler = () => {
-                    this.props.deleteFavorite(item._id);
+                    Alert.alert(
+                        'Delete Favorite?',
+                        'Are you sure you wish to delete the favorite dish ' + item.name +'?',
+                        [
+                            { 
+                                text : 'Cancel',
+                                onPress : () => close(),
+                                style: 'cancel'
+                            },
+                            {
+                                text : 'OK',
+                                onPress : () => this.props.deleteFavorite(item._id),
+                            }
+                        ],
+                        { cancelable : false }
+                    );
                 };
                 return (
                     <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
@@ -43,18 +63,26 @@ class Favorites extends Component {
             };
             const renderRightActions = progress => (
                 <View style={{ width: 128 }}>
-                    {renderRightAction("Delete",'#dd2c00')}
+                    {renderRightAction("Delete",'#dd2c00', 64, progress)}
                 </View>
             );
+    
+            const updateRef = ref => {
+                _swipeableRow = ref;
+            }
+            const close = () => {
+                _swipeableRow.close();
+            }
             return(
                 <Swipeable
                     friction={2}
+                    ref={updateRef}
                     rightThreshold={40}
                     renderRightActions={renderRightActions}
                 >
                     <ListItem 
                         key = {item._id}
-                        onPress = {()=> navigate('Dishdetail', {dishId: item._id})}>
+                        onPress = {()=> this.navigate('Dishdetail', {dishId: item._id})}>
                         <Avatar source={{uri: baseUrl + item.image}} rounded/>
                         <ListItem.Content>
                             <ListItem.Title>{item.name}</ListItem.Title>
@@ -64,7 +92,6 @@ class Favorites extends Component {
                 </Swipeable>
             );
         }
-        
         if (this.props.dishes.isLoading){
             return(
                 <Loading/>
