@@ -5,10 +5,15 @@ import { Loading } from "./LoadingComponent";
 
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import { deleteFavorite } from "../redux/ActionCreators"
 
 const mapStateToProps = state => ({
     dishes    : state.dishes,
     favorites : state.favorites,
+})
+
+const mapDispatchToProps = dispatch => ({
+    deleteFavorite : (dishId) => dispatch(deleteFavorite(dishId))
 })
 
 class Favorites extends Component {
@@ -52,4 +57,4 @@ class Favorites extends Component {
     }
 }
 
-export default connect(mapStateToProps)(Favorites);
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
