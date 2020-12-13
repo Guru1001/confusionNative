@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, Text, FlatList, } from "react-native";
+import { ScrollView, Text, SafeAreaView } from "react-native";
 import { Card, ListItem, Avatar } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -33,37 +33,42 @@ class About extends Component{
             </Card>
         );
 
-        const renderLeader = ({ item }) => (
-            <ListItem>
-                <Avatar rounded title={item.name} source={{uri: baseUrl + item.image}}/>
-                <ListItem.Content>
-                    <ListItem.Title>{item.name}</ListItem.Title>
-                    <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
+        const RenderLeaders = ({leaders}) => (
+            leaders.map(
+                item => (
+                    <ListItem key={item._id}>
+                        <Avatar rounded title={item.name} source={{uri: baseUrl + item.image}}/>
+                        <ListItem.Content>
+                            <ListItem.Title>{item.name}</ListItem.Title>
+                            <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
+                )
+            )
         )
+
         if(this.props.leaders.isLoading){
             return(
                 <ScrollView>
-                <History/>
-                <Card>
-                    <Card.Title>Corporate Leadership</Card.Title>
-                    <Card.Divider/>
-                    <Loading />
-                </Card>
-            </ScrollView>
+                    <History/>
+                    <Card>
+                        <Card.Title>Corporate Leadership</Card.Title>
+                        <Card.Divider/>
+                        <Loading />
+                    </Card>
+                </ScrollView>
             );
         }
         else if(this.props.leaders.errMess){
             return(
                 <ScrollView>
-                <History/>
-                <Card>
-                    <Card.Title>Corporate Leadership</Card.Title>
-                    <Card.Divider/>
-                    <Text>{this.props.leaders.errMess}</Text>
-                </Card>
-            </ScrollView>
+                    <History/>
+                    <Card>
+                        <Card.Title>Corporate Leadership</Card.Title>
+                        <Card.Divider/>
+                        <Text>{this.props.leaders.errMess}</Text>
+                    </Card>
+                </ScrollView>
             );
         }
         else {
@@ -73,11 +78,7 @@ class About extends Component{
                     <Card>
                         <Card.Title>Corporate Leadership</Card.Title>
                         <Card.Divider/>
-                        <FlatList
-                            data={ this.props.leaders.leaders }
-                            keyExtractor = { item => item._id }
-                            renderItem = { renderLeader }
-                        />
+                        <RenderLeaders leaders={this.props.leaders.leaders}/>
                     </Card>
                 </ScrollView>
             );

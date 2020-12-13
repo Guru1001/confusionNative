@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, FlatList, Modal, Button, StyleSheet } from "react-native";
+import { View, Text, ScrollView, Modal, Button, StyleSheet } from "react-native";
 import { Card, Icon, Input, Rating } from "react-native-elements";
 import { postFavorite, postComment } from "../redux/ActionCreators"
 
@@ -60,35 +60,27 @@ const RenderDish = (props) =>{
     }
 }
 
-const RenderComments = (props)=>{
-    const comments = props.comments;
-    const renderCommentItem = ({item, index}) =>{
-        return(
-            <View key={index} style={{margin:10}}>
-                <Text style={{fontSize:14}}>
-                    {item.comment}
-                </Text>
-                <Text style={{fontSize:12}}>
-                    {item.rating} Stars
-                </Text>
-                <Text style={{fontSize:12}}>
-                    {"-- " + item.author + ", " + item.date.substring(0,10)}
-                </Text>
-            </View>
-        );
-    }
-    return(
-        <Card>
-            <Card.Title>Comments</Card.Title>
-            <Card.Divider/>
-            <FlatList
-                data={comments}
-                renderItem={renderCommentItem}
-                keyExtractor={item=>item._id}
-            />
-        </Card>
-    );
-}
+const RenderComments = ({comments})=>(
+    <Card>
+        <Card.Title>Comments</Card.Title>
+        <Card.Divider/>
+        {comments.map(
+            item => (
+                <View key={item.id} style={{margin:10}}>
+                    <Text style={{fontSize:14}}>
+                        {item.comment}
+                    </Text>
+                    <Text style={{fontSize:12}}>
+                        {item.rating} Stars
+                    </Text>
+                    <Text style={{fontSize:12}}>
+                        {"-- " + item.author + ", " + item.date.substring(0,10)}
+                    </Text>
+                </View>
+            )
+        )}
+    </Card>
+);
 
 class Dishdetail extends Component{
 
@@ -130,7 +122,7 @@ class Dishdetail extends Component{
     render(){
         const dishId = this.props.route.params.dishId;
         return(
-        <ScrollView>
+        <ScrollView nestedScrollEnabled>
             <RenderDish 
                 dish={this.props.dishes.dishes.filter((dish)=> dish._id == dishId)[0]}
                 favorite = {this.props.favorites.includes(dishId)}

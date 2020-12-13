@@ -19,17 +19,17 @@ const mapDispatchToProps = dispatch => ({
 class Favorites extends Component {
     render(){
         const { navigate } = this.props.navigation;
-        const renderMenuItem = ({ item, index }) => {
+        const renderFavoriteItem = ({item}) => {
             return(
-                <ListItem 
-                    key = {index}
-                    onPress = {()=> navigate('Dishdetail', {dishId: item._id})}>
-                    <Avatar source={{uri: baseUrl + item.image}} rounded/>
-                    <ListItem.Content>
-                        <ListItem.Title>{item.name}</ListItem.Title>
-                        <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem>
+                    <ListItem 
+                        key = {item._id}
+                        onPress = {()=> navigate('Dishdetail', {dishId: item._id})}>
+                        <Avatar source={{uri: baseUrl + item.image}} rounded/>
+                        <ListItem.Content>
+                            <ListItem.Title>{item.name}</ListItem.Title>
+                            <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
             );
         }
         
@@ -49,7 +49,7 @@ class Favorites extends Component {
             return(
                 <FlatList
                     data = {this.props.dishes.dishes.filter(dish => this.props.favorites.includes(dish._id.toString()))}
-                    renderItem = {renderMenuItem}
+                    renderItem = {renderFavoriteItem}
                     keyExtractor = { item => item._id}
                 />
             );
