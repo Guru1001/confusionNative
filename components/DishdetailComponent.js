@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView, Modal, Button, StyleSheet } from "react-native";
 import { Card, Icon, Input, Rating } from "react-native-elements";
+import * as Animatable from 'react-native-animatable';
 import { postFavorite, postComment } from "../redux/ActionCreators"
+
 
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -21,38 +23,40 @@ const RenderDish = (props) =>{
     const dish = props.dish;
     if(dish != null){
         return (
-            <Card>
-                <Card.Title>{dish.name}</Card.Title>
-                <Card.Divider/>
-                <Card.Image source={{uri : baseUrl + dish.image}} />
-                <Text style={{marginBottom: 10}}>
-                {dish.description}
-                </Text>
-                <View style={styles.styleIcons}>
-                    <Icon
-                        raised
-                        reverse
-                        name={props.favorite ? "heart" : "heart-o"}
-                        type="font-awesome"
-                        color="#f50"
-                        onPress={() => 
-                            props.favorite ? 
-                            console.log("Already favorite"):
-                            props.onPress()
-                        }
-                    />
-                    <Icon
-                        raised
-                        reverse
-                        name="pencil"
-                        type="font-awesome"
-                        color="#512DA8"
-                        onPress={() => 
-                            props.toggleModal()
-                        }
-                    />
-                </View>
-            </Card>
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                <Card>
+                    <Card.Title>{dish.name}</Card.Title>
+                    <Card.Divider/>
+                    <Card.Image source={{uri : baseUrl + dish.image}} />
+                    <Text style={{marginBottom: 10}}>
+                    {dish.description}
+                    </Text>
+                    <View style={styles.styleIcons}>
+                        <Icon
+                            raised
+                            reverse
+                            name={props.favorite ? "heart" : "heart-o"}
+                            type="font-awesome"
+                            color="#f50"
+                            onPress={() => 
+                                props.favorite ? 
+                                console.log("Already favorite"):
+                                props.onPress()
+                            }
+                        />
+                        <Icon
+                            raised
+                            reverse
+                            name="pencil"
+                            type="font-awesome"
+                            color="#512DA8"
+                            onPress={() => 
+                                props.toggleModal()
+                            }
+                        />
+                    </View>
+                </Card>
+            </Animatable.View>
         );
     }
     else{
@@ -61,25 +65,27 @@ const RenderDish = (props) =>{
 }
 
 const RenderComments = ({comments})=>(
-    <Card>
-        <Card.Title>Comments</Card.Title>
-        <Card.Divider/>
-        {comments.map(
-            item => (
-                <View key={item.id} style={{margin:10}}>
-                    <Text style={{fontSize:14}}>
-                        {item.comment}
-                    </Text>
-                    <Text style={{fontSize:12}}>
-                        {item.rating} Stars
-                    </Text>
-                    <Text style={{fontSize:12}}>
-                        {"-- " + item.author + ", " + item.date.substring(0,10)}
-                    </Text>
-                </View>
-            )
-        )}
-    </Card>
+    <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
+        <Card>
+            <Card.Title>Comments</Card.Title>
+            <Card.Divider/>
+            {comments.map(
+                item => (
+                    <View key={item.id} style={{margin:10}}>
+                        <Text style={{fontSize:14}}>
+                            {item.comment}
+                        </Text>
+                        <Text style={{fontSize:12}}>
+                            {item.rating} Stars
+                        </Text>
+                        <Text style={{fontSize:12}}>
+                            {"-- " + item.author + ", " + item.date.substring(0,10)}
+                        </Text>
+                    </View>
+                )
+            )}
+        </Card>
+    </Animatable.View>
 );
 
 class Dishdetail extends Component{

@@ -4,6 +4,7 @@ import { ListItem, Avatar } from "react-native-elements";
 import { Loading } from "./LoadingComponent";
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import Icon from "react-native-vector-icons/FontAwesome"
+import * as Animatable from 'react-native-animatable';
 
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -80,15 +81,17 @@ class Favorites extends Component {
                     rightThreshold={40}
                     renderRightActions={renderRightActions}
                 >
-                    <ListItem 
-                        key = {item._id}
-                        onPress = {()=> this.navigate('Dishdetail', {dishId: item._id})}>
-                        <Avatar source={{uri: baseUrl + item.image}} rounded/>
-                        <ListItem.Content>
-                            <ListItem.Title>{item.name}</ListItem.Title>
-                            <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-                        </ListItem.Content>
-                    </ListItem>
+                    <Animatable.View animation='fadeInRightBig' duration={2000}>
+                        <ListItem 
+                            key = {item._id}
+                            onPress = {()=> this.navigate('Dishdetail', {dishId: item._id})}>
+                            <Avatar source={{uri: baseUrl + item.image}} rounded/>
+                            <ListItem.Content>
+                                <ListItem.Title>{item.name}</ListItem.Title>
+                                <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+                            </ListItem.Content>
+                        </ListItem>
+                    </Animatable.View>
                 </Swipeable>
             );
         }

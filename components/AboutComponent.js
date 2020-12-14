@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { ScrollView, Text, SafeAreaView } from "react-native";
+import { ScrollView, Text } from "react-native";
 import { Card, ListItem, Avatar } from "react-native-elements";
+import * as Animatable from 'react-native-animatable';
+
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
+
 
 const mapStateToProps = state => ({
     leaders : state.leaders,
@@ -50,36 +53,42 @@ class About extends Component{
         if(this.props.leaders.isLoading){
             return(
                 <ScrollView>
-                    <History/>
-                    <Card>
-                        <Card.Title>Corporate Leadership</Card.Title>
-                        <Card.Divider/>
-                        <Loading />
-                    </Card>
+                    <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                        <History/>
+                        <Card>
+                            <Card.Title>Corporate Leadership</Card.Title>
+                            <Card.Divider/>
+                            <Loading />
+                        </Card>
+                    </Animatable.View>
                 </ScrollView>
             );
         }
         else if(this.props.leaders.errMess){
             return(
                 <ScrollView>
-                    <History/>
-                    <Card>
-                        <Card.Title>Corporate Leadership</Card.Title>
-                        <Card.Divider/>
-                        <Text>{this.props.leaders.errMess}</Text>
-                    </Card>
+                    <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                        <History/>
+                        <Card>
+                            <Card.Title>Corporate Leadership</Card.Title>
+                            <Card.Divider/>
+                            <Text>{this.props.leaders.errMess}</Text>
+                        </Card>
+                    </Animatable.View>
                 </ScrollView>
             );
         }
         else {
             return(
                 <ScrollView>
-                    <History/>
-                    <Card>
-                        <Card.Title>Corporate Leadership</Card.Title>
-                        <Card.Divider/>
-                        <RenderLeaders leaders={this.props.leaders.leaders}/>
-                    </Card>
+                    <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                        <History/>
+                        <Card>
+                            <Card.Title>Corporate Leadership</Card.Title>
+                            <Card.Divider/>
+                            <RenderLeaders leaders={this.props.leaders.leaders}/>
+                        </Card>
+                    </Animatable.View>
                 </ScrollView>
             );
         }
