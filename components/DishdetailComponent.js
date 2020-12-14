@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { View, Text, ScrollView, Modal, Button,Aleat, PanResponder, StyleSheet, Alert } from "react-native";
 import { Card, Icon, Input, Rating } from "react-native-elements";
 import * as Animatable from 'react-native-animatable';
@@ -20,15 +20,20 @@ const mapDispatchToProps = dispatch =>({
 });
 
 const RenderDish = (props) =>{
+    const [view, setView] = useState(0);
     const dish = props.dish;
+    const handleViewRef = ref => { setView(ref) };
     const recognizeDrag = ({moveX, moveY, dx, dy}) => {
         if(dx < -200 && Math.abs(dy) < 100 ) return true;
         else return false;
     }
-
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder:(e, gestureState) => {
             return true;
+        },
+        onPanResponderGrant : () => {
+            view.rubberBand(1000)
+                .then(endState => console.log(endState.finished?'finished':'cancelled'));
         },
         onPanResponderEnd : (e, gestureState) => {
             if(recognizeDrag(gestureState)){
@@ -62,6 +67,7 @@ const RenderDish = (props) =>{
                 animation='fadeInDown' 
                 duration={2000} 
                 delay={1000}
+                ref = {handleViewRef}
                 {...panResponder.panHandlers}
             >
                 <Card>
