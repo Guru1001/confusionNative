@@ -36,8 +36,7 @@ const RenderDish = (props) =>{
             return true;
         },
         onPanResponderGrant : () => {
-            view.rubberBand(1000)
-                .then(endState => console.log(endState.finished?'finished':'cancelled'));
+            view.rubberBand(1000);
         },
         onPanResponderEnd : (e, gestureState) => {
             if(recognizeDrag(gestureState)){
@@ -47,7 +46,6 @@ const RenderDish = (props) =>{
                     [
                         {
                             text : 'Cancel',
-                            onPress : () => console.log("Cancel Pressed"),
                             style: 'cancel'
                         },
                         {

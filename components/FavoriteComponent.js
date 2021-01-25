@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, FlatList,Alert, Animated, StyleSheet } from "react-native";
+import { View, Text, FlatList, Alert, Animated, StyleSheet } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import { Loading } from "./LoadingComponent";
 import { RectButton, Swipeable } from 'react-native-gesture-handler';

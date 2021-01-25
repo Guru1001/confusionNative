@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { persistStore, persistCombineReducers } from 'redux-persist';
-import  AsyncStorage  from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { dishes } from "./dishes";
 import { comments } from "./comments";
