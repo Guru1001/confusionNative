@@ -41,7 +41,7 @@ const MenuNavigator = () => (
             },
             headerTintColor:'#fff',
             headerTitleStyle:{
-                color:'#fff'
+                color:'#ff f'
             },
         }}
 

@@ -3,8 +3,8 @@ import { Text, View, Alert, StyleSheet, Switch, Button, Modal } from "react-nati
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Picker } from "@react-native-picker/picker";
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications } from 'expo';
-
+import * as Permissions  from 'expo-permissions';
+import * as Notifications from 'expo-notifications';
 class Reservation extends Component{
     constructor(props){
         super(props);
@@ -49,7 +49,7 @@ class Reservation extends Component{
     }
 
     async obtainNotificationPermission(){
-        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS); 
         if(permission.status !== 'granted'){
             permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
             if(permission.status !== 'granted'){
@@ -61,17 +61,12 @@ class Reservation extends Component{
 
     async presentLocalNotification(date){
         await this.obtainNotificationPermission();
-        Notifications.presentLocalNotificationAsync({
-            title: 'Your Reservation',
-            body : 'Reservation for ' + date + 'requested',
-            ios:{
-                sound:true
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "Your Reservation",
+                body: 'Reservation for "' + date + '" requested'
             },
-            android:{
-                sound: true,
-                vibrate: true,
-                color: '#512DA8'
-            }
+            trigger: null,
         });
     }
 
