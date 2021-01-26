@@ -7,8 +7,9 @@ import About from './AboutComponent';
 import Reservation from "./ReservationComponent";
 import Favorites from "./FavoriteComponent";
 import Login from "./LoginComponent";
-import { View, Image, StyleSheet, ScrollView, SafeAreaView, Text } from "react-native";
+import { View, Image, StyleSheet, SafeAreaView, Text, ToastAndroid } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
+import  NetInfo  from '@react-native-community/netinfo';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { Icon } from "react-native-elements";
 
@@ -260,12 +261,44 @@ const CustomDrawerContentComponent = (props) =>(
 )
 
 class Main extends Component{
+    unsubscribe = null;
     componentDidMount(){
         this.props.fetchDishes();
         this.props.fetchComments();
         this.props.fetchPromos();
         this.props.fetchLeaders();
+        NetInfo.fetch()
+        .then(state => {
+            ToastAndroid.show("Initial Network Connectivity Type:" 
+            + state.type, ToastAndroid.SHORT)
+
+        });
+        this.unsubscribe = NetInfo.addEventListener(state => this.handleConnectivityChange(state));
     }
+
+    componentWillUnmount(){
+        this.unsubscribe();
+    }
+
+    handleConnectivityChange = (state) => {
+        switch(state.type){
+            case 'none':
+                ToastAndroid.show("You are offline!", ToastAndroid.SHORT);
+                break;
+            case 'wifi':
+                ToastAndroid.show("You are on wifi network!", ToastAndroid.SHORT);
+                break;
+            case 'cellular':
+                ToastAndroid.show("You are on cellular network!", ToastAndroid.SHORT);
+                break;
+            case 'unknown':
+                ToastAndroid.show("You are on mars!", ToastAndroid.SHORT);
+                break;
+            default:
+                break;
+        }
+    }
+
     render(){
         return(
             <Drawer.Navigator 

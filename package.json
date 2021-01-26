@@ -11,6 +11,7 @@
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/datetimepicker": "^3.0.8",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/netinfo": "^5.9.6",
     "@react-native-community/picker": "^1.6.6",
     "@react-native-picker/picker": "^1.9.4",
     "@react-navigation/bottom-tabs": "^5.11.6",
@@ -18,6 +19,11 @@
     "@react-navigation/native": "^5.8.2",
     "@react-navigation/stack": "^5.11.1",
     "expo": "~39.0.2",
+    "expo-asset": "~8.2.0",
+    "expo-image-manipulator": "~8.3.0",
+    "expo-image-picker": "~9.1.0",
+    "expo-notifications": "~0.7.2",
+    "expo-permissions": "~9.3.0",
     "expo-secure-store": "~9.2.0",
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
@@ -40,12 +46,7 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0",
-    "expo-permissions": "~9.3.0",
-    "expo-notifications": "~0.7.2",
-    "expo-image-picker": "~9.1.0",
-    "expo-asset": "~8.2.0",
-    "expo-image-manipulator": "~8.3.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
