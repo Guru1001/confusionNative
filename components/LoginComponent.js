@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, ScrollView, Image } from "react-native";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
 import { Icon, Input, CheckBox, Button } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import { Asset } from 'expo-asset';
+import * as ImageManipulator from 'expo-image-manipulator';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { baseUrl } from '../shared/baseUrl';
 
@@ -27,18 +30,6 @@ class LoginTab  extends Component{
                 this.setState({remember: true});
             }
         })
-    }
-
-    static navigationOptions = {
-        title : 'Login',
-        tabBarIcon : ({ tintColor }) => (
-            <Icon
-                name = 'sign-in'
-                type = 'font-awesome'
-                size = {24}
-                iconStyle = {{color: tintColor}}
-            />
-        )
     }
 
     handleLogin(){
@@ -125,25 +116,59 @@ class RegisterTab extends Component{
     }
     
     getImageFromCamera = async () => {
-        const cameraPermission = await Permissions.askAsync()
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if(cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted'){
+            let capturedImage = await ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                aspect: [1,1]
+            }); 
+            if(!capturedImage.cancelled){
+                this.processImage(capturedImage.uri);
+            }
+        }
     }
 
-    static navigationOptions = {
-        title : 'Register',
-        tabBarIcon : ({ tintColor }) => (
-            <Icon
-                name = 'user-plus'
-                type = 'font-awesome'
-                size = {24}
-                iconStyle = {{color: tintColor}}
-            />
-        )
+    processImage = async (imageUri) => {
+        let processedImage = await ImageManipulator.manipulateAsync(
+            imageUri, 
+            [
+                { resize : {width:400}}
+            ],
+            { format : 'png'}
+        );
+        this.setState({imageUrl : processedImage.uri });
+    }
+
+    handleRegister(){
+        console.log(JSON.stringify(this.state));
+        if(this.state.remember){
+            SecureStore.setItemAsync(
+                'userinfo',
+                JSON.stringify({
+                    username: this.state.username, 
+                    password: this.state.passowrd
+                })    
+            )
+            .catch(error=> console.log("Could not save user info ", error))
+        }
     }
 
     render(){
         return(
             <ScrollView>
                 <View style={styles.container}>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={{uri:this.state.imageUrl}}
+                            loadingIndicatorSource={require('./images/logo.png')}
+                            style = {styles.image}
+                        />
+                        <Button
+                            title='Camera'
+                            onPress={this.getImageFromCamera}
+                        />
+                    </View>
                     <Input
                         placeholder="Username"
                         leftIcon={{type:'font-awesome', name:'user-o'}}
@@ -262,12 +287,16 @@ const styles = StyleSheet.create({
     imageContainer:{
         flex:1,
         flexDirection: "row",
+        justifyContent: "center",
+        alignContent: 'center',
+        alignItems:'center',
         margin: 20
     },
     image:{
         margin: 10,
         width: 80,
-        height: 60,
+        height: 80,
+        borderRadius: 50
     },
     formCheckbox:{
         margin: 10,
